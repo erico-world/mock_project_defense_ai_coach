@@ -11,7 +11,8 @@ const monaSans = Mona_Sans({
 
 export const metadata: Metadata = {
   title: "COACH-ME-AI",
-  description: "An AI-powered platform for preparing for mock interviews",
+  description:
+    "An AI-powered platform for preparing for project defense presentations",
 };
 
 export default function RootLayout({
