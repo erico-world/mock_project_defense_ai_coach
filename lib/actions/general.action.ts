@@ -2,6 +2,7 @@
 
 import { generateObject } from "ai";
 import { google } from "@ai-sdk/google";
+import { revalidatePath } from "next/cache";
 
 import { db } from "@/firebase/admin";
 import { feedbackSchema } from "@/constants";
@@ -122,4 +123,37 @@ export async function getInterviewsByUserId(
     id: doc.id,
     ...doc.data(),
   })) as Interview[];
+}
+
+export async function deleteInterview(formData: FormData) {
+  try {
+    const interviewId = formData.get("interviewId") as string;
+    const userId = formData.get("userId") as string;
+
+    if (!interviewId) {
+      console.error("Interview ID is required");
+      return;
+    }
+
+    // Delete the interview document
+    await db.collection("interviews").doc(interviewId).delete();
+
+    // Also delete any associated feedback
+    const feedbackSnapshot = await db
+      .collection("feedback")
+      .where("interviewId", "==", interviewId)
+      .where("userId", "==", userId)
+      .get();
+
+    // Delete all found feedback documents
+    const deleteFeedbackPromises = feedbackSnapshot.docs.map((doc) =>
+      doc.ref.delete()
+    );
+    await Promise.all(deleteFeedbackPromises);
+
+    // Revalidate the homepage to refresh the interview list
+    revalidatePath("/");
+  } catch (error) {
+    console.error("Error deleting interview:", error);
+  }
 }

@@ -1,12 +1,16 @@
 import dayjs from "dayjs";
 import Link from "next/link";
 import Image from "next/image";
+import { Trash2 } from "lucide-react";
 
 import { Button } from "./ui/button";
 import DisplayTechIcons from "./DisplayTechIcons";
 
 import { cn, getRandomInterviewCover } from "@/lib/utils";
-import { getFeedbackByInterviewId } from "@/lib/actions/general.action";
+import {
+  deleteInterview,
+  getFeedbackByInterviewId,
+} from "@/lib/actions/general.action";
 
 const InterviewCard = async ({
   interviewId,
@@ -37,6 +41,9 @@ const InterviewCard = async ({
     feedback?.createdAt || createdAt || Date.now()
   ).format("MMM D, YYYY");
 
+  // Display the project topic if available, otherwise display a generic message
+  const displayTitle = role ? role : "Project Defense";
+
   return (
     <div className="card-border w-[360px] max-sm:w-full min-h-96">
       <div className="card-interview">
@@ -51,6 +58,21 @@ const InterviewCard = async ({
             <p className="badge-text ">{normalizedType}</p>
           </div>
 
+          {/* Delete Button */}
+          <form action={deleteInterview} className="absolute top-3 left-3">
+            <input type="hidden" name="interviewId" value={interviewId} />
+            <input type="hidden" name="userId" value={userId || ""} />
+            <Button
+              type="submit"
+              variant="ghost"
+              size="icon"
+              className="rounded-full bg-dark-300 hover:bg-destructive-100/20"
+              title="Delete Interview"
+            >
+              <Trash2 className="h-4 w-4 text-destructive-100" />
+            </Button>
+          </form>
+
           {/* Cover Image */}
           <Image
             src={getRandomInterviewCover()}
@@ -60,8 +82,8 @@ const InterviewCard = async ({
             className="rounded-full object-fit size-[90px]"
           />
 
-          {/* Interview Role */}
-          <h3 className="mt-5 capitalize">{role} Project Defense</h3>
+          {/* Project Topic */}
+          <h3 className="mt-5 capitalize">{displayTitle}</h3>
 
           {/* Date & Score */}
           <div className="flex flex-row gap-5 mt-3">
