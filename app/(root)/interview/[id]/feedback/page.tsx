@@ -1,9 +1,11 @@
 import dayjs from "dayjs";
 import Link from "next/link";
 import Image from "next/image";
+import { Trash2 } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import {
+  deleteInterview,
   getFeedbackByInterviewId,
   getInterviewById,
 } from "@/lib/actions/general.action";
@@ -34,11 +36,28 @@ const Feedback = async ({ params }: RouteParams) => {
 
   return (
     <section className="section-feedback">
-      <div className="flex flex-row justify-center">
+      <div className="flex flex-row justify-center relative">
         <h1 className="text-4xl font-semibold">
           Feedback on the Project Defense -{" "}
           <span className="capitalize">{interview.projectTopic}</span> Project
         </h1>
+
+        {/* Delete Button */}
+        <div className="absolute top-0 right-0">
+          <form action={deleteInterview}>
+            <input type="hidden" name="interviewId" value={id} />
+            <input type="hidden" name="userId" value={user?.id || ""} />
+            <Button
+              type="submit"
+              variant="ghost"
+              size="icon"
+              className="rounded-full bg-dark-300 hover:bg-destructive-100/20 cursor-pointer"
+              title="Delete Project Defense"
+            >
+              <Trash2 className="h-5 w-5 text-destructive-100" />
+            </Button>
+          </form>
+        </div>
       </div>
 
       <div className="flex flex-row justify-center ">

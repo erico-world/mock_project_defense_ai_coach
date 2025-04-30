@@ -66,7 +66,7 @@ const InterviewCard = async ({
               type="submit"
               variant="ghost"
               size="icon"
-              className="rounded-full bg-dark-300 hover:bg-destructive-100/20"
+              className="rounded-full bg-dark-300 hover:bg-destructive-100/20 cursor-pointer"
               title="Delete Interview"
             >
               <Trash2 className="h-4 w-4 text-destructive-100" />

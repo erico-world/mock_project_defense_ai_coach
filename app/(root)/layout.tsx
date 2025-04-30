@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { redirect } from "next/navigation";
 
 import { isAuthenticated } from "@/lib/actions/auth.action";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const isUserAuthenticated = await isAuthenticated();
@@ -11,7 +12,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="root-layout">
-      <nav>
+      <nav className="flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/logo.svg"
@@ -21,6 +22,8 @@ const Layout = async ({ children }: { children: ReactNode }) => {
           />
           <h2 className="text-primary-100">COACH-ME-AI</h2>
         </Link>
+
+        <ThemeToggle />
       </nav>
 
       {children}
