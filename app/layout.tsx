@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   title: "COACH-ME-AI",
   description:
     "An AI-powered platform for preparing for project defense presentations",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({

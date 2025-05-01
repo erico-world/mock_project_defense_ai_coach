@@ -20,6 +20,9 @@ const InterviewCard = async ({
   techstack,
   createdAt,
 }: InterviewCardProps) => {
+  // Debug log the incoming props
+  console.log("InterviewCard props:", { interviewId, projectTopic, type });
+
   const feedback =
     userId && interviewId
       ? await getFeedbackByInterviewId({
@@ -41,8 +44,29 @@ const InterviewCard = async ({
     feedback?.createdAt || createdAt || Date.now()
   ).format("MMM D, YYYY");
 
-  // Display the project topic if available, otherwise display a generic message
-  const displayTitle = projectTopic ? projectTopic : "Project Defense";
+  // Enhanced logic to handle all possible edge cases for project topic
+  let displayTitle = "Project Defense";
+
+  try {
+    // Try to use the project topic if it's a valid non-empty string
+    if (typeof projectTopic === "string" && projectTopic.trim() !== "") {
+      // Make sure it's not just the default or empty placeholder
+      const normalizedTopic = projectTopic.trim().toLowerCase();
+      if (
+        normalizedTopic !== "project defense" &&
+        normalizedTopic !== "undefined" &&
+        normalizedTopic !== "null"
+      ) {
+        displayTitle = projectTopic.trim();
+      }
+    }
+  } catch (e) {
+    console.error("Error processing projectTopic:", e);
+    // Keep the default value
+  }
+
+  // Log the final display title for debugging
+  console.log(`Card ${interviewId}: Using display title "${displayTitle}"`);
 
   return (
     <div className="card-border w-[360px] max-sm:w-full min-h-96">

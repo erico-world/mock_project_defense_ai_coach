@@ -24,19 +24,19 @@ export async function createFeedback(params: CreateFeedbackParams) {
       }),
       schema: feedbackSchema,
       prompt: `
-        You are an AI examiner analyzing a project defense. Your task is to evaluate the student based on structured categories. Be thorough and detailed in your analysis. Don't be lenient with the student. If there are mistakes or areas for improvement, point them out.
+        You are an AI examiner analyzing a project defense presentation. Your task is to evaluate the student based on structured categories. Be thorough and detailed in your analysis. Provide constructive feedback that will help the student improve for their actual defense.
         Transcript:
         ${formattedTranscript}
 
-        Please score the candidate from 0 to 100 in the following areas. Do not add categories other than the ones provided. Map these scores to our existing categories:
-        - **Presentation Skills (Maps to Communication Skills)**: Clarity, articulation, structured responses and confidence in presentation.
-        - **Project Understanding (Maps to Technical Knowledge)**: Depth of knowledge about the project topic.
-        - **Problem-Solving (Maps to Problem-solving skills)**: Ability to analyze problems and propose solutions.
-        - **Research Methodology (Maps to Cultural & Role Fit)**: Alignment with company values and job role.
-        - **Presentation Skills (Maps to Confidence & Clarity)**: Confidence in responses, engagement, and clarity.
+        Please score the candidate from 0 to 100 in the following areas. Do not add categories other than the ones provided:
+        - **Presentation Skills**: Clarity, articulation, structured responses and confidence in presentation.
+        - **Project Understanding**: Depth of knowledge about the project topic, technologies used, and implementation details.
+        - **Problem-Solving Approach**: Ability to analyze problems encountered during development and explain solutions implemented.
+        - **Research Methodology**: Quality of research conducted, sources consulted, and how research informed project decisions.
+        - **Confidence & Clarity**: Overall confidence, clear communication, and ability to defend project decisions.
         `,
       system:
-        "You are a professional interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories",
+        "You are an academic evaluator analyzing a project defense practice session. Your task is to provide helpful feedback to prepare the student for their actual defense",
     });
 
     const feedback = {
@@ -104,10 +104,16 @@ export async function getLatestInterviews(
     .limit(limit)
     .get();
 
-  return interviews.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Interview[];
+  const interviewsData = interviews.docs.map((doc) => {
+    const data = doc.data();
+    console.log("Latest interview data:", { id: doc.id, ...data });
+    return {
+      id: doc.id,
+      ...data,
+    };
+  }) as Interview[];
+
+  return interviewsData;
 }
 
 export async function getInterviewsByUserId(
@@ -119,10 +125,16 @@ export async function getInterviewsByUserId(
     .orderBy("createdAt", "desc")
     .get();
 
-  return interviews.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  })) as Interview[];
+  const interviewsData = interviews.docs.map((doc) => {
+    const data = doc.data();
+    console.log("Interview data:", { id: doc.id, ...data });
+    return {
+      id: doc.id,
+      ...data,
+    };
+  }) as Interview[];
+
+  return interviewsData;
 }
 
 export async function deleteInterview(formData: FormData) {

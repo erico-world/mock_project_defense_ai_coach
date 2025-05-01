@@ -98,9 +98,9 @@ export const mappings = {
 };
 
 export const interviewer: CreateAssistantDTO = {
-  name: "Interviewer",
+  name: "Project Defense Coach",
   firstMessage:
-    "Hello! Thank you for taking the time to speak with me today. I'm excited to learn more about you and your project topic experience.",
+    "Hello! I'm your AI project defense coach. I'll be asking you questions about your project to help you prepare for your defense presentation. Let's begin with your first question.",
   transcriber: {
     provider: "deepgram",
     model: "nova-2",
@@ -111,7 +111,7 @@ export const interviewer: CreateAssistantDTO = {
     voiceId: "sarah",
     stability: 0.4,
     similarityBoost: 0.8,
-    speed: 0.9,
+    speed: 0.6,
     style: 0.5,
     useSpeakerBoost: true,
   },
@@ -121,7 +121,7 @@ export const interviewer: CreateAssistantDTO = {
     messages: [
       {
         role: "system",
-        content: `You are a professional job interviewer conducting a real-time voice interview with a candidate. Your goal is to assess their qualifications, motivation, and fit for the role.
+        content: `You are an experienced academic advisor conducting a project defense preparation session with a student. Your goal is to assess their understanding of their project, help identify areas for improvement, and prepare them for their actual defense.
 
 Interview Guidelines:
 Follow the structured question flow:
@@ -131,24 +131,24 @@ Engage naturally & react appropriately:
 Listen actively to responses and acknowledge them before moving forward.
 Ask brief follow-up questions if a response is vague or requires more detail.
 Keep the conversation flowing smoothly while maintaining control.
-Be professional, yet warm and welcoming:
+Be professional, yet warm and supportive:
 
-Use official yet friendly language.
-Keep responses concise and to the point (like in a real voice interview).
+Use academic yet friendly language.
+Keep responses concise and to the point (like in a real project defense).
 Avoid robotic phrasing—sound natural and conversational.
-Answer the candidate’s questions professionally:
+Provide constructive feedback:
 
-If asked about the role, company, or expectations, provide a clear and relevant answer.
-If unsure, redirect the candidate to HR for more details.
+If the student's answer is incomplete or incorrect, guide them to a better response.
+Highlight the strengths of clear and comprehensive answers.
 
-Conclude the interview properly:
-Thank the candidate for their time.
-Inform them that the company will reach out soon with feedback.
-End the conversation on a polite and positive note.
+Conclude the session properly:
+Thank the student for their time.
+Provide brief encouraging words about their upcoming defense.
+End the conversation on a positive note.
 
 
-- Be sure to be professional and polite.
-- Keep all your responses short and simple. Use official language, but be kind and welcoming.
+- Be sure to be professional and supportive.
+- Keep all your responses short and simple. Use academic language, but be kind and encouraging.
 - This is a voice conversation, so keep your responses short, like in a real conversation. Don't ramble for too long.`,
       },
     ],
@@ -159,27 +159,27 @@ export const feedbackSchema = z.object({
   totalScore: z.number(),
   categoryScores: z.tuple([
     z.object({
-      name: z.literal("Communication Skills"),
+      name: z.literal("Presentation Skills"),
       score: z.number(),
       comment: z.string(),
     }),
     z.object({
-      name: z.literal("Technical Knowledge"),
+      name: z.literal("Project Understanding"),
       score: z.number(),
       comment: z.string(),
     }),
     z.object({
-      name: z.literal("Problem Solving"),
+      name: z.literal("Problem-Solving Approach"),
       score: z.number(),
       comment: z.string(),
     }),
     z.object({
-      name: z.literal("Cultural Fit"),
+      name: z.literal("Research Methodology"),
       score: z.number(),
       comment: z.string(),
     }),
     z.object({
-      name: z.literal("Confidence and Clarity"),
+      name: z.literal("Confidence & Clarity"),
       score: z.number(),
       comment: z.string(),
     }),
@@ -208,7 +208,7 @@ export const dummyInterviews: Interview[] = [
   {
     id: "1",
     userId: "user1",
-    projectTopic: "",
+    projectTopic: "AI-Powered Personal Finance Manager",
     type: "Technical",
     techstack: ["React", "TypeScript", "Next.js", "Tailwind CSS"],
     degreeLevel: "Junior",
@@ -219,7 +219,7 @@ export const dummyInterviews: Interview[] = [
   {
     id: "2",
     userId: "user1",
-    projectTopic: "Full Stack Developer",
+    projectTopic: "Sustainable Energy Monitoring System",
     type: "Mixed",
     techstack: ["Node.js", "Express", "MongoDB", "React"],
     degreeLevel: "Senior",

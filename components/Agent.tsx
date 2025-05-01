@@ -21,6 +21,35 @@ interface SavedMessage {
   content: string;
 }
 
+// Add this function to extract project topic from conversation
+function extractProjectTopicFromMessages(
+  messages: SavedMessage[]
+): string | null {
+  // Look for specific patterns in the conversation that indicate the project topic
+  const projectTopicPatterns = [
+    /What is the topic of your project\?.*?(\w.+)/i,
+    /your project topic.*?(\w.+)/i,
+    /project is about.*?(\w.+)/i,
+    /working on.*?(\w.+)/i,
+    /my project is.*?(\w.+)/i,
+    /topic is.*?(\w.+)/i,
+  ];
+
+  // Try to find the project topic in user messages
+  for (const message of messages) {
+    if (message.role === "user") {
+      for (const pattern of projectTopicPatterns) {
+        const match = message.content.match(pattern);
+        if (match && match[1]) {
+          return match[1].trim();
+        }
+      }
+    }
+  }
+
+  return null;
+}
+
 const Agent = ({
   userName,
   userId,
@@ -34,6 +63,7 @@ const Agent = ({
   const [messages, setMessages] = useState<SavedMessage[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [lastMessage, setLastMessage] = useState<string>("");
+  const [projectTopic, setProjectTopic] = useState<string | null>(null);
 
   useEffect(() => {
     const onCallStart = () => {
@@ -85,6 +115,15 @@ const Agent = ({
   useEffect(() => {
     if (messages.length > 0) {
       setLastMessage(messages[messages.length - 1].content);
+
+      // Try to extract project topic from the conversation
+      if (type === "generate" && !projectTopic) {
+        const extractedTopic = extractProjectTopicFromMessages(messages);
+        if (extractedTopic) {
+          console.log("Extracted project topic:", extractedTopic);
+          setProjectTopic(extractedTopic);
+        }
+      }
     }
 
     const handleGenerateFeedback = async (messages: SavedMessage[]) => {
@@ -112,7 +151,16 @@ const Agent = ({
         handleGenerateFeedback(messages);
       }
     }
-  }, [messages, callStatus, feedbackId, interviewId, router, type, userId]);
+  }, [
+    messages,
+    callStatus,
+    feedbackId,
+    interviewId,
+    router,
+    type,
+    userId,
+    projectTopic,
+  ]);
 
   const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
@@ -122,6 +170,8 @@ const Agent = ({
         variableValues: {
           username: userName,
           userid: userId,
+          // If we have extracted a project topic from conversation, include it
+          ...(projectTopic && { projectTopic }),
         },
       });
     } else {
