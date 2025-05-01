@@ -19,7 +19,6 @@ export async function POST(request: Request) {
     techstack,
     amount,
     userid,
-    username,
     messages, // Sometimes the topic might be in the conversation
   } = requestData;
 
