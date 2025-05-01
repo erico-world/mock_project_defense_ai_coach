@@ -28,7 +28,16 @@ const InterviewCard = async ({
         })
       : null;
 
-  const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
+  // Improve type normalization to handle percentage formats
+  let normalizedType;
+  if (/mix/gi.test(type)) {
+    normalizedType = "Mixed";
+  } else if (/%/.test(type)) {
+    // If it contains percentages, simplify to just display "Mixed"
+    normalizedType = "Mixed";
+  } else {
+    normalizedType = type;
+  }
 
   const badgeColor =
     {

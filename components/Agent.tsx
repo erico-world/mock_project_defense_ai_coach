@@ -154,9 +154,9 @@ const Agent = ({
             <Image
               src="/robot.png"
               alt="profile-image"
-              width={65}
-              height={54}
-              className="object-cover"
+              width={120}
+              height={120}
+              className="rounded-full object-contain size-[120px]"
             />
             {isSpeaking && <span className="animate-speak" />}
           </div>

@@ -14,7 +14,7 @@
 
    <div align="center">
      A comprehensive AI-powered platform to help you prepare for your project defense presentations
-   </div>
+    </div>
 </div>
 
 ## 📋 Table of Contents
@@ -78,18 +78,18 @@ Make sure you have the following installed:
 
 1. Clone the repository
 
-   ```bash
+```bash
    git clone https://github.com/yourusername/coach-me-ai.git
    cd coach-me-ai
-   ```
+```
 
 2. Install dependencies
 
-   ```bash
-   npm install
+```bash
+npm install
    # or
    yarn
-   ```
+```
 
 3. Set up environment variables (see Environment Setup section)
 
