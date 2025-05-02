@@ -20,9 +20,6 @@ const InterviewCard = async ({
   techstack,
   createdAt,
 }: InterviewCardProps) => {
-  // Debug log the incoming props
-  console.log("InterviewCard props:", { interviewId, projectTopic, type });
-
   const feedback =
     userId && interviewId
       ? await getFeedbackByInterviewId({
@@ -35,38 +32,21 @@ const InterviewCard = async ({
 
   const badgeColor =
     {
-      Behavioral: "bg-light-400",
-      Mixed: "bg-light-600",
-      Technical: "bg-light-800",
-    }[normalizedType] || "bg-light-600";
+      Behavioral: "bg-[#40E0D0]",
+      Mixed: "bg-[#20B2AA]",
+      Technical: "bg-[#008B8B]",
+    }[normalizedType] || "bg-[#20B2AA]";
 
   const formattedDate = dayjs(
     feedback?.createdAt || createdAt || Date.now()
   ).format("MMM D, YYYY");
 
-  // Enhanced logic to handle all possible edge cases for project topic
-  let displayTitle = "Project Defense";
-
-  try {
-    // Try to use the project topic if it's a valid non-empty string
-    if (typeof projectTopic === "string" && projectTopic.trim() !== "") {
-      // Make sure it's not just the default or empty placeholder
-      const normalizedTopic = projectTopic.trim().toLowerCase();
-      if (
-        normalizedTopic !== "project defense" &&
-        normalizedTopic !== "undefined" &&
-        normalizedTopic !== "null"
-      ) {
-        displayTitle = projectTopic.trim();
-      }
-    }
-  } catch (e) {
-    console.error("Error processing projectTopic:", e);
-    // Keep the default value
-  }
-
-  // Log the final display title for debugging
-  console.log(`Card ${interviewId}: Using display title "${displayTitle}"`);
+  // Display the project topic if available, otherwise display a generic message
+  // Using nullish coalescing to ensure empty strings don't use fallback
+  const displayTitle =
+    projectTopic && projectTopic.trim() !== ""
+      ? projectTopic
+      : "Project Defense";
 
   return (
     <div className="card-border w-[360px] max-sm:w-full min-h-96">

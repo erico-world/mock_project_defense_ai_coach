@@ -104,16 +104,10 @@ export async function getLatestInterviews(
     .limit(limit)
     .get();
 
-  const interviewsData = interviews.docs.map((doc) => {
-    const data = doc.data();
-    console.log("Latest interview data:", { id: doc.id, ...data });
-    return {
-      id: doc.id,
-      ...data,
-    };
-  }) as Interview[];
-
-  return interviewsData;
+  return interviews.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Interview[];
 }
 
 export async function getInterviewsByUserId(
@@ -125,16 +119,10 @@ export async function getInterviewsByUserId(
     .orderBy("createdAt", "desc")
     .get();
 
-  const interviewsData = interviews.docs.map((doc) => {
-    const data = doc.data();
-    console.log("Interview data:", { id: doc.id, ...data });
-    return {
-      id: doc.id,
-      ...data,
-    };
-  }) as Interview[];
-
-  return interviewsData;
+  return interviews.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Interview[];
 }
 
 export async function deleteInterview(formData: FormData) {

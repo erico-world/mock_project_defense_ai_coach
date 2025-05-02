@@ -5,22 +5,22 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-success-100: #49de50;
-  --color-success-200: #42c748;
-  --color-destructive-100: #f75353;
-  --color-destructive-200: #c44141;
+  --color-success-100: #40e0d0;
+  --color-success-200: #20b2aa;
+  --color-destructive-100: #ff5a5a;
+  --color-destructive-200: #d04040;
 
-  --color-primary-100: #dddfff;
-  --color-primary-200: #cac5fe;
+  --color-primary-100: #40e0d0;
+  --color-primary-200: #20b2aa;
 
-  --color-light-100: #d6e0ff;
-  --color-light-400: #6870a6;
-  --color-light-600: #4f557d;
-  --color-light-800: #24273a;
+  --color-light-100: #e0ffff;
+  --color-light-400: #7fffd4;
+  --color-light-600: #48d1cc;
+  --color-light-800: #20b2aa;
 
-  --color-dark-100: #020408;
-  --color-dark-200: #27282f;
-  --color-dark-300: #242633;
+  --color-dark-100: #121212;
+  --color-dark-200: #1a1a1a;
+  --color-dark-300: #242424;
 
   --font-mona-sans: "Mona Sans", sans-serif;
 
@@ -29,37 +29,37 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --background: oklch(0.98 0.025 195);
+  --foreground: oklch(0.25 0.03 210);
+  --card: oklch(0.99 0.02 190);
+  --card-foreground: oklch(0.25 0.03 210);
+  --popover: oklch(0.99 0.02 190);
+  --popover-foreground: oklch(0.25 0.03 210);
+  --primary: oklch(0.7 0.18 190);
+  --primary-foreground: oklch(0.99 0.01 200);
+  --secondary: oklch(0.92 0.05 195);
+  --secondary-foreground: oklch(0.3 0.06 200);
+  --muted: oklch(0.95 0.03 195);
+  --muted-foreground: oklch(0.45 0.07 200);
+  --accent: oklch(0.85 0.08 190);
+  --accent-foreground: oklch(0.25 0.06 200);
+  --destructive: oklch(0.7 0.2 27.325);
+  --border: oklch(0.8 0.08 190);
+  --input: oklch(0.95 0.04 190);
+  --ring: oklch(0.7 0.18 190);
+  --chart-1: oklch(0.7 0.22 190);
+  --chart-2: oklch(0.65 0.18 200);
+  --chart-3: oklch(0.6 0.15 210);
+  --chart-4: oklch(0.75 0.2 180);
+  --chart-5: oklch(0.8 0.18 170);
+  --sidebar: oklch(0.96 0.03 195);
+  --sidebar-foreground: oklch(0.25 0.03 210);
+  --sidebar-primary: oklch(0.7 0.18 190);
+  --sidebar-primary-foreground: oklch(0.99 0.01 200);
+  --sidebar-accent: oklch(0.85 0.08 190);
+  --sidebar-accent-foreground: oklch(0.25 0.06 200);
+  --sidebar-border: oklch(0.8 0.08 190);
+  --sidebar-ring: oklch(0.7 0.18 190);
 }
 
 .dark {
@@ -141,20 +141,21 @@
   body {
     @apply bg-background text-foreground;
   }
-  p {
-    @apply text-light-100;
+  p,
+  li {
+    @apply text-dark-100 dark:text-light-100;
   }
   h2 {
-    @apply text-3xl font-semibold;
+    @apply text-3xl font-semibold dark:text-white text-dark-100;
   }
   h3 {
-    @apply text-2xl font-semibold;
+    @apply text-2xl font-semibold dark:text-white text-dark-100;
+  }
+  .text-primary-100 {
+    @apply dark:text-primary-100 text-primary-200;
   }
   ul {
     @apply list-disc list-inside;
-  }
-  li {
-    @apply text-light-100;
   }
 }
 
@@ -197,11 +198,11 @@
     @apply w-full;
 
     .label {
-      @apply !text-light-100 !font-normal;
+      @apply !text-dark-300 dark:!text-light-100 !font-normal;
     }
 
     .input {
-      @apply !bg-dark-200 !rounded-full !min-h-12 !px-5 placeholder:!text-light-100;
+      @apply dark:!bg-dark-200 !bg-light-100/70 !rounded-full !min-h-12 !px-5 dark:placeholder:!text-light-100 placeholder:!text-dark-300 !text-dark-100 dark:!text-light-100 !border !border-primary-100/30;
     }
 
     .btn {
@@ -244,7 +245,7 @@
       @apply dark-gradient rounded-2xl  min-h-12 px-5 py-3 flex items-center justify-center;
 
       p {
-        @apply text-lg text-center text-white;
+        @apply text-lg text-center dark:text-white text-dark-100;
       }
     }
   }
@@ -274,7 +275,7 @@
   }
 
   .interview-text {
-    @apply text-lg text-center text-white;
+    @apply text-lg text-center dark:text-white text-dark-100;
   }
 
   .progress {
@@ -282,24 +283,24 @@
   }
 
   .tech-tooltip {
-    @apply absolute bottom-full mb-1 hidden group-hover:flex px-2 py-1 text-xs text-white bg-gray-700 rounded-md shadow-md;
+    @apply absolute bottom-full mb-1 hidden group-hover:flex px-2 py-1 text-xs dark:text-white text-dark-100 bg-gray-700 rounded-md shadow-md;
   }
 
   .card-interview {
     @apply dark-gradient rounded-2xl min-h-full flex flex-col p-6 relative overflow-hidden gap-10 justify-between;
 
     .badge-text {
-      @apply text-sm font-semibold capitalize;
+      @apply text-sm font-semibold capitalize text-dark-100 dark:text-white;
     }
   }
 }
 
 @utility dark-gradient {
-  @apply bg-gradient-to-b from-[#1A1C20] to-[#08090D];
+  @apply bg-gradient-to-b from-[#1A1A1A] to-[#121212] dark:bg-gradient-to-b dark:from-[#1A1A1A] dark:to-[#121212] bg-gradient-to-b from-[#EAF9F9] to-[#D8F2F2];
 }
 
 @utility border-gradient {
-  @apply bg-gradient-to-b from-[#4B4D4F] to-[#4B4D4F33];
+  @apply bg-gradient-to-b from-[#40E0D0] to-[#40E0D033] dark:bg-gradient-to-b dark:from-[#40E0D0] dark:to-[#40E0D033] bg-gradient-to-b from-[#40E0D0] to-[#A0E8E8];
 }
 
 @utility pattern {
@@ -307,11 +308,11 @@
 }
 
 @utility blue-gradient-dark {
-  @apply bg-gradient-to-b from-[#171532] to-[#08090D];
+  @apply bg-gradient-to-b from-[#1A1A1A] to-[#121212] dark:bg-gradient-to-b dark:from-[#1A1A1A] dark:to-[#121212] bg-gradient-to-b from-[#E5F8F8] to-[#C8F0F0];
 }
 
 @utility blue-gradient {
-  @apply bg-gradient-to-l from-[#FFFFFF] to-[#CAC5FE];
+  @apply bg-gradient-to-l from-[#E0FFFF] to-[#40E0D0];
 }
 
 @utility flex-center {
