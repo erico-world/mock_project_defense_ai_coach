@@ -10,6 +10,8 @@ import {
 } from "@/lib/actions/general.action";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import DisplayTechIcons from "@/components/DisplayTechIcons";
+import ScoringCriteria from "@/components/ScoringCriteria";
+import AcademicLevelGuide from "@/components/AcademicLevelGuide";
 
 const InterviewDetails = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -21,7 +23,7 @@ const InterviewDetails = async ({ params }: RouteParams) => {
 
   const feedback = await getFeedbackByInterviewId({
     interviewId: id,
-    userId: user?.id!,
+    userId: user?.id ?? "",
   });
 
   return (
@@ -42,13 +44,25 @@ const InterviewDetails = async ({ params }: RouteParams) => {
           <DisplayTechIcons techStack={interview.techstack} />
         </div>
 
-        <p className="bg-dark-200 px-4 py-2 rounded-lg h-fit">
-          {interview.type}
-        </p>
+        <div className="flex flex-col items-end gap-2">
+          <p className="bg-dark-200 px-4 py-2 rounded-lg h-fit">
+            {interview.type}
+          </p>
+          <p className="text-sm">
+            Academic Level:{" "}
+            <span className="font-medium">{interview.degreeLevel}</span>
+          </p>
+        </div>
+      </div>
+
+      {/* Scoring Criteria and Academic Level Guide Components */}
+      <div className="mt-6 flex flex-col gap-2">
+        <ScoringCriteria />
+        <AcademicLevelGuide currentLevel={interview.degreeLevel} />
       </div>
 
       <Agent
-        userName={user?.name!}
+        userName={user?.name ?? ""}
         userId={user?.id}
         interviewId={id}
         type="interview"
@@ -58,5 +72,4 @@ const InterviewDetails = async ({ params }: RouteParams) => {
     </>
   );
 };
-
 export default InterviewDetails;

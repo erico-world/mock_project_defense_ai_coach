@@ -11,6 +11,8 @@ import {
 } from "@/lib/actions/general.action";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/actions/auth.action";
+import AntiPatterns from "@/components/AntiPatterns";
+import AcademicLevelGuide from "@/components/AcademicLevelGuide";
 
 const displayNames = {
   "Technical Knowledge": "Project Understanding & Technical Implementation",
@@ -122,6 +124,12 @@ const Feedback = async ({ params }: RouteParams) => {
             <li key={index}>{area}</li>
           ))}
         </ul>
+      </div>
+
+      {/* Anti-Patterns and Academic Level Guide Components */}
+      <div className="mt-2 flex flex-col gap-2">
+        <AntiPatterns />
+        <AcademicLevelGuide currentLevel={interview.degreeLevel} />
       </div>
 
       <div className="buttons">

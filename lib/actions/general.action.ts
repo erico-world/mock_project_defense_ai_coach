@@ -18,6 +18,10 @@ export async function createFeedback(params: CreateFeedbackParams) {
       )
       .join("");
 
+    // Get the interview details to determine academic level for calibration
+    const interview = await getInterviewById(interviewId);
+    const academicLevel = interview?.degreeLevel || "Undergraduate";
+
     const { object } = await generateObject({
       model: google("gemini-2.0-flash-001", {
         structuredOutputs: false,
@@ -25,18 +29,69 @@ export async function createFeedback(params: CreateFeedbackParams) {
       schema: feedbackSchema,
       prompt: `
         You are an AI examiner analyzing a project defense presentation. Your task is to evaluate the student based on structured categories. Be thorough and detailed in your analysis. Provide constructive feedback that will help the student improve for their actual defense.
+        
         Transcript:
         ${formattedTranscript}
 
-        Please score the candidate from 0 to 100 in the following areas. Do not add categories other than the ones provided:
-        - **Presentation Skills**: Clarity, articulation, structured responses and confidence in presentation.
-        - **Project Understanding**: Depth of knowledge about the project topic, technologies used, and implementation details.
-        - **Problem-Solving Approach**: Ability to analyze problems encountered during development and explain solutions implemented.
-        - **Research Methodology**: Quality of research conducted, sources consulted, and how research informed project decisions.
-        - **Confidence & Clarity**: Overall confidence, clear communication, and ability to defend project decisions.
+        Academic Level: ${academicLevel}
+        
+        SCORING CALIBRATION GUIDELINES BY ACADEMIC LEVEL:
+        - Undergraduate: Focus on fundamentals, basic implementation, and clear communication. Expect basic understanding of technologies used.
+        - Junior: Expect solid technical knowledge, good problem-solving, and ability to explain design choices clearly.
+        - Senior: Demand deeper technical expertise, sophisticated problem-solving, research rigor, and professional presentation skills.
+        - Graduate: Require advanced theoretical knowledge, innovative approaches, research excellence, and expert-level articulation of complex concepts.
+        - PhD: Expect exceptional mastery, original contributions to the field, rigorous methodology, and publication-quality presentation.
+        
+        COMMON DEFENSE ANTI-PATTERNS TO IDENTIFY AND PENALIZE:
+        - Vague responses lacking specific technical details
+        - Inability to explain design decisions or technology choices
+        - Overreliance on team contributions without personal understanding
+        - Lack of critical evaluation of project limitations
+        - Poor time management in responses
+        - Defensive reactions to challenging questions
+        - Inconsistencies in technical explanations
+        - Failure to connect project to broader academic/industry context
+        
+        Please score the candidate from 0 to 100 in the following areas. Do not add categories other than the ones provided. Be strict and honest in your assessment, avoiding grade inflation:
+        
+        DETAILED SCORING CRITERIA:
+        - **Presentation Skills** (0-100): 
+          * 90-100: Exceptional clarity, perfect articulation, highly structured responses, outstanding confidence
+          * 70-89: Good clarity, well-articulated, structured responses, confident presentation
+          * 50-69: Adequate clarity, somewhat articulated, partially structured, moderate confidence
+          * 30-49: Poor clarity, poorly articulated, unstructured responses, low confidence
+          * 0-29: Extremely unclear, inarticulate, chaotic responses, no confidence
+        
+        - **Project Understanding** (0-100): 
+          * 90-100: Expert knowledge of project topic, technologies, and implementation details
+          * 70-89: Strong knowledge of project topic, technologies, and implementation details
+          * 50-69: Basic knowledge of project topic, technologies, and implementation details
+          * 30-49: Limited knowledge of project topic, technologies, and implementation details
+          * 0-29: Minimal knowledge of project topic, technologies, and implementation details
+        
+        - **Problem-Solving Approach** (0-100): 
+          * 90-100: Exceptional ability to analyze problems and explain solutions
+          * 70-89: Strong ability to analyze problems and explain solutions
+          * 50-69: Adequate ability to analyze problems and explain solutions
+          * 30-49: Limited ability to analyze problems and explain solutions
+          * 0-29: Poor ability to analyze problems and explain solutions
+        
+        - **Research Methodology** (0-100): 
+          * 90-100: Exceptional research quality, diverse sources, research clearly informed decisions
+          * 70-89: Strong research quality, good sources, research informed decisions
+          * 50-69: Adequate research quality, some sources, research somewhat informed decisions
+          * 30-49: Limited research quality, few sources, research minimally informed decisions
+          * 0-29: Poor research quality, minimal sources, research did not inform decisions
+        
+        - **Confidence & Clarity** (0-100): 
+          * 90-100: Exceptional confidence, perfect clarity, outstanding defense of decisions
+          * 70-89: Strong confidence, good clarity, solid defense of decisions
+          * 50-69: Moderate confidence, adequate clarity, basic defense of decisions
+          * 30-49: Low confidence, limited clarity, weak defense of decisions
+          * 0-29: No confidence, unclear communication, unable to defend decisions
         `,
       system:
-        "You are an academic evaluator analyzing a project defense practice session. Your task is to provide helpful feedback to prepare the student for their actual defense",
+        "You are a strict academic evaluator analyzing a project defense practice session. Your task is to provide honest, unbiased feedback to prepare the student for their actual defense. Do not show favoritism or pity - evaluate based solely on performance against objective standards for their academic level.",
     });
 
     const feedback = {
